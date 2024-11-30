@@ -1,0 +1,22 @@
+{% extends 'Dashbase.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <h1>Profile</h1>
+    
+    <div>
+        <p>Email: {{ user.email }}</p>
+        
+        <div>
+            <p>Current Image:</p>
+            <img src="{{ asset('uploads/' ~ user.image) }}" alt="Profile Image" width="200">
+        </div>
+
+        <form action="{{ path('app_profile') }}" method="POST" enctype="multipart/form-data">
+            <label for="image">Update Profile Image:</label>
+            <input type="file" name="image" id="image">
+            <button type="submit">Update Image</button>
+        </form>
+    </div>
+{% endblock %}

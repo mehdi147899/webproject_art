@@ -3,83 +3,180 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Entity\User;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProduitController extends AbstractController
 {
-    #[Route('/produits', name: 'produit_index')]
-    public function index(ProduitRepository $produitRepository): Response
-    {
-        // Fetch all products from the database
-        $produits = $produitRepository->findAll();
 
-        return $this->render('produit/index.html.twig', [
-            'produits' => $produits,
-        ]);
+    // src/Controller/ProduitController.php
+
+    private string $uploadsDirectory;
+
+    public function __construct(string $uploadsDirectory)
+    {
+        $this->uploadsDirectory = $uploadsDirectory;
     }
 
-    
     #[Route('/produit/new', name: 'produit_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $produit = new Produit();
-    
+
         // Create the form
         $form = $this->createForm(ProduitType::class, $produit);
-    
+
         // Handle the form submission
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
-            // If form is valid, persist the new product to the database
+            // Handle image upload
+            $imageFile = $form->get('image')->getData();
+
+            if ($imageFile) {
+                // Generate a unique name for the file
+                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+
+                // Move the file to the uploads directory
+                $imageFile->move($this->uploadsDirectory, $newFilename);
+
+                // Set the image name in the product entity
+                $produit->setImage($newFilename);
+            }
+
+            // Persist the new product to the database
             $em->persist($produit);
             $em->flush();
-    
+
             // Add a flash message for success
-            $this->addFlash('success', 'Product has been added successfully!');
-    
-            // Redirect to the gallery page or wherever you want after saving the product
-            return $this->redirectToRoute('app_Galerie');
+            $this->addFlash('success', 'Produit ajouté avec succès !');
+
+            // Redirect to a different page (e.g., gallery or list page)
+            return $this->redirectToRoute('app_galerie');
         }
-    
-        // In case the form is not submitted or not valid, render the form again
+
+        // Render the form view
         return $this->render('produit/New.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-    
-    #[Route('/produit/{id}/edit', name: 'produit_edit')]
-    public function edit(Produit $produit, Request $request, EntityManagerInterface $em): Response
+
+    #[Route('/produits', name: 'app_produit_all')]
+    public function index(ProduitRepository $produitRepository): Response
+    {
+        $produits = $produitRepository->findAll();
+
+        return $this->render('produit/AllProduit.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+
+    // Route for editing a product
+    #[Route('/produit/edit/{id}', name: 'app_produit_edit')]
+    public function edit(Request $request, Produit $produit, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Update the product in the database
+            // Handle file upload
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                // Define the upload directory
+                $uploadDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
+
+                // Generate a unique file name
+                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+
+                // Move the uploaded file to the target directory
+                $imageFile->move($uploadDirectory, $newFilename);
+
+                // Set the new file name to the product
+                $produit->setImage($newFilename);
+            }
+
+            // Save the product using the EntityManager
+            $em->persist($produit);
             $em->flush();
 
-            return $this->redirectToRoute('produit_index');
+            $this->addFlash('success', 'Produit modifié avec succès.');
+
+            return $this->redirectToRoute('app_produit_all');
         }
 
         return $this->render('produit/EditProduit.html.twig', [
             'form' => $form->createView(),
+            'produit' => $produit,
         ]);
     }
-    #[Route('/produit/{id}/delete', name: 'produit_delete')]
-    public function delete(Produit $produit, EntityManagerInterface $em): Response
+    #[Route('/produit/{id}/delete', name: 'app_produit_delete')]
+    public function delete(Produit $produit, EntityManagerInterface $em, CsrfTokenManagerInterface $csrfTokenManager, Request $request): RedirectResponse
     {
-        // Remove the product from the database
+        // CSRF validation logic
+        $csrfToken = $request->request->get('_csrf_token');
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('delete' . $produit->getId(), $csrfToken))) {
+            throw new \Exception('Token CSRF invalide.');
+        }
+    
+        // Proceed with deleting the product
         $em->remove($produit);
         $em->flush();
-
-        return $this->redirectToRoute('produit_index');
+    
+        $this->addFlash('success', 'Produit supprimé avec succès.');
+    
+        return $this->redirectToRoute('app_produit_all'); // Assuming 'app_produit_all' is the route for listing products
     }
-   
+    
+    #[Route('/profile', name: 'app_profile')]
+    public function profile(Request $request, User $user, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    {
+        // Handle the form submission (image update)
+        if ($request->isMethod('POST') && $request->files->get('image')) {
+            $image = $request->files->get('image');
+    
+            if ($image) {
+                // Generate a unique file name based on the original file name
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+    
+                // Move the file to the directory where images are stored
+                try {
+                    $image->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Error uploading image');
+                    return $this->redirectToRoute('app_profile');
+                }
+    
+                // Update the user's image field
+                $user->setImage($newFilename);
+    
+                // Persist the change
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'Image de profil mise à jour avec succès.');
+            }
+        }
+    
+        // Pass the user data to the Twig template
+        return $this->render('security/Profile.html.twig', [
+            'user' => $user,
+        ]);
+    }
     
 }

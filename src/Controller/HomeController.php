@@ -31,18 +31,13 @@ class HomeController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
-    #[Route('/produit/{id}', name: 'app_produit_detail', requirements: ['id' => '\d+'])]
+    #[Route('/Galerie/{id}', name: 'app_Galerie_detail', requirements: ['id' => '\d+'])]
     public function produitDetail(ProduitRepository $produitRepository, int $id): Response
     {
         // Fetch the product by its ID
         $produit = $produitRepository->find($id);
 
-        // Check if the product exists
-        if (!$produit) {
-            throw $this->createNotFoundException('Produit non trouvé');
-        }
-
-        return $this->render('home/produit_detail.html.twig', [
+        return $this->render('home/GalItem.html.twig', [
             'produit' => $produit,
         ]);
     }

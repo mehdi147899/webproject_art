@@ -9,21 +9,29 @@
             <h3 class="card-title mb-0">Ajouter un Produit</h3>
         </div>
         <div class="card-body">
-            <form method="post" action="{{ path('produit_new') }}">
+            <form method="post" action="{{ path('produit_new') }}" enctype="multipart/form-data">
                 {{ form_start(form) }}
                 <div class="mb-3">
                     <label for="form_Nom" class="form-label">Nom du Produit</label>
-                    {{ form_widget(form.Nom, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'} }) }}
-                </div>
-                <div class="mb-3">
-                    <label for="form_Prix" class="form-label">Prix</label>
-                    {{ form_widget(form.Prix, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix'} }) }}
+                    {{ form_widget(form.Nom) }}
                 </div>
                 <div class="mb-3">
                     <label for="form_Description" class="form-label">Description</label>
-                    {{ form_widget(form.Description, { 'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Entrez une description'} }) }}
+                    {{ form_widget(form.Description) }}
                 </div>
-                <button type="submit" class="btn" style="background-color: #FF9D3D; color: white;">Enregistrer le Produit</button>
+                <div class="mb-3">
+                    <label for="form_Prix" class="form-label">Prix</label>
+                    {{ form_widget(form.Prix) }}
+                </div>
+                <div class="mb-3">
+                    <label for="form_Categorie" class="form-label">Catégorie</label>
+                    {{ form_widget(form.Categorie) }}
+                </div>
+                <div class="mb-3">
+                    <label for="form_image" class="form-label">Image</label>
+                    {{ form_widget(form.image) }}
+                </div>
+                <button type="submit" class="btn" style="background-color: #FF9D3D; color: white;">Enregistrer</button>
                 {{ form_end(form) }}
             </form>
         </div>

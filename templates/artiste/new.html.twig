@@ -1,0 +1,55 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Create a New Artiste</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {{ form_start(form) }}
+                            
+                            <div class="mb-3">
+                                {{ form_label(form.Nom, 'Full Name', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist name'}}) }}
+                                {{ form_errors(form.Nom) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.prenom, 'Surname', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist surname'}}) }}
+                                {{ form_errors(form.prenom) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.bio, 'Biography', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.bio, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist biography', 'rows': 4}}) }}
+                                {{ form_errors(form.bio) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.image, 'Image', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.image) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.date_de_naissance, 'Date of Birth', {'attr': {'class': 'form-label'}}) }}
+                                {{ form_widget(form.date_de_naissance, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.date_de_naissance) }}
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-warning btn-lg">Create Artiste</button>
+                            </div>
+                            
+                            {{ form_end(form) }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

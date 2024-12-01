@@ -12,10 +12,10 @@
             background-color: #f8f9fa;
         }
         .navbar {
-            background-color: #fac998;
+            background: linear-gradient(90deg, rgba(198,103,26,1) 0%, rgba(57,23,8,1) 180%);
         }
         .navbar-brand, .nav-link {
-            color: #000000 ;
+            color: #ffffff ;
         }
         .sidebar {
             height: 100vh;
@@ -23,9 +23,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #fac998;
+            background: linear-gradient(180deg, rgba(198,103,26,1) 0%, rgba(57,23,8,1) 90%);
             padding-top: 20px;
         }
+        
         .sidebar .nav-link {
             color: #000000;
             margin: 10px 0;
@@ -59,17 +60,26 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <ul class="nav flex-column">
-                <h1 class="text">Allegui</h1>
+                <h1 class="text" style="margin-left: 1cm;">𝓐𝓵𝓵𝓮𝓰𝓾𝓲</h1>
+                <h5>
                 <li class="nav-item">
                     <h1 class="nav-link" href="#">🏠 Dashboard</h1>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{path('app_profile')}}">👤 Profile</a>
-                </li>
+                </li></h5>
+                <h5><li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_profile', {id: app.user.id}) }}">👤 Profile</a>
+                </li></h5>
+            <h5>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_produit_all') }}">📦 Produit</a>
-                </li>
+                </li></h5>
+                <h5>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('artiste_index') }}"> 🧑🏻‍🎨​ Artiste</a>
+                </li></h5>
             </ul>
+            <div class="mt-auto text-center">
+                <p class="text-muted" style="font-size: 14px;">{{ app.user.email }}</p>
+            </div>
         </div>
 
         <!-- Main Content -->

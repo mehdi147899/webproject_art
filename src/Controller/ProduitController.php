@@ -2,21 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Entity\User;
+use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProduitController extends AbstractController
 {
@@ -129,54 +130,64 @@ class ProduitController extends AbstractController
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('delete' . $produit->getId(), $csrfToken))) {
             throw new \Exception('Token CSRF invalide.');
         }
-    
+
         // Proceed with deleting the product
         $em->remove($produit);
         $em->flush();
-    
+
         $this->addFlash('success', 'Produit supprimé avec succès.');
-    
+
         return $this->redirectToRoute('app_produit_all'); // Assuming 'app_produit_all' is the route for listing products
     }
-    
-    #[Route('/profile', name: 'app_profile')]
-    public function profile(Request $request, User $user, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+
+    #[Route('/profile/{id}', name: 'app_profile')]
+    public function profile(Request $request, int $id, Security $security, SluggerInterface $slugger): Response
     {
+        // Get the currently logged-in user
+        $user = $security->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
+
+
+
         // Handle the form submission (image update)
         if ($request->isMethod('POST') && $request->files->get('image')) {
             $image = $request->files->get('image');
-    
+
             if ($image) {
                 // Generate a unique file name based on the original file name
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
-    
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+
                 // Move the file to the directory where images are stored
                 try {
                     $image->move(
-                        $this->getParameter('images_directory'),
+                        $this->getParameter('uploads_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Error uploading image');
-                    return $this->redirectToRoute('app_profile');
+                    return $this->redirectToRoute('app_profile', ['id' => $id]);
                 }
-    
-                // Update the user's image field
-                $user->setImage($newFilename);
-    
-                // Persist the change
+
+                // Update the user's image in the database
+                $entityManager = $this->$this->getDoctrine()->getManager();
+                $user->$user->setImage($newFilename);
                 $entityManager->flush();
-    
-                $this->addFlash('success', 'Image de profil mise à jour avec succès.');
+
+                $this->addFlash('success', 'Profile image updated successfully.');
             }
         }
-    
+
         // Pass the user data to the Twig template
         return $this->render('security/Profile.html.twig', [
             'user' => $user,
         ]);
     }
-    
+
+
+
 }

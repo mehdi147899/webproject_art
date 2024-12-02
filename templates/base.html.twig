@@ -122,6 +122,9 @@
             .btn-getstarted {
                 margin-top: 10px;
             }
+            .content {
+              margin-top: 50 cm;
+          }
         }
     </style>
   </style>
@@ -151,18 +154,18 @@
                 </ul>
             </li>
             <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
-            <li><a href="{{ path('app_artistes') }}">Artiste</a></li>
+            <li><a href="{{ path('Artiste_index') }}">Artiste</a></li>
             <li><a href="{{ path('app_contact') }}">Contact</a></li>
 
         </ul>
     </nav>
     <a class="btn-getstarted btn btn-primary" href="{{ path('app_login') }}">Login</a>
 </header>
+<div class="content">
 
-    <!-- Main Content Block -->
     {% block body %}
     {% endblock %}
-
+</div>
     {% block footer %}
     <footer id="footer" class="footer position-relative light-background">
         <div class="container footer-top">

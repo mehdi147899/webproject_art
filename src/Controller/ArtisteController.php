@@ -120,13 +120,9 @@ class ArtisteController extends AbstractController
 
         return $this->redirectToRoute('artiste_index');
     }
-    #[Route('/artistes', name: 'app_artistes')]
-    public function showAllArtistes(ArtisteRepository $artisteRepository): Response
-    {
 
-        return $this->render('home/Artiste.html.twig', [
-            'artistes' => $artisteRepository->findAll(),
-        ]);
-    }
+    
+    
+    
 
 }

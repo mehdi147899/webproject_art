@@ -11,11 +11,12 @@
         body {
             background-color: #f8f9fa;
         }
+
         .navbar {
-            background: #ffffff;
+            background: linear-gradient(90deg, rgba(237, 197, 164, 1) 0%, rgba(255, 122, 63, 1) 100%);
         }
         .navbar-brand, .nav-link {
-            color: black;
+            color: white;
         }
         .sidebar {
             height: 100vh;
@@ -28,13 +29,14 @@
             display: none; /* Hidden by default for mobile */
         }
         .sidebar .nav-link {
-            color: #000000;
+            color: black;
             margin: 10px 0;
         }
         .content {
             margin-left: 260px;
             padding: 20px;
         }
+
         @media (max-width: 768px) {
             .sidebar {
                 display: none; /* Hidden on mobile */
@@ -43,17 +45,25 @@
                 margin-left: 0;
             }
         }
+
         @media (min-width: 769px) {
             .sidebar {
                 display: block; /* Visible on larger screens */
             }
+        }
+
+        .offcanvas {
+            background: linear-gradient(180deg, rgba(237, 197, 164, 1) 0%, rgba(255, 122, 63, 1) 100%);
+        }
+        .offcanvas .nav-link {
+            color: white;
         }
     </style>
 </head>
 <body>
     {% if app.user != null %}
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Dashboard</a>
                 <button 
@@ -78,7 +88,7 @@
         <!-- Sidebar for Desktop -->
         <div class="sidebar">
             <ul class="nav flex-column">
-                <h1 class="text-center">𝓐𝓵𝓵𝓮𝓰𝓾𝓲</h1>
+                <h1 class="text-center text-white">𝓐𝓵𝓵𝓮𝓰𝓾𝓲</h1>
                 <h5>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_profile', {id: app.user.id}) }}">👤 Profile</a>
@@ -94,13 +104,18 @@
                         <a class="nav-link" href="{{ path('artiste_index') }}"> 🧑🏻‍🎨​ Artiste</a>
                     </li>
                 </h5>
+                <h5>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('dashboard_contacts') }}">📩 Contacts</a>
+                </li>
+            </h5>
             </ul>
         </div>
 
         <!-- Offcanvas Sidebar for Mobile -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+                <h5 class="offcanvas-title text-white" id="sidebarOffcanvasLabel">Menu</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -113,6 +128,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('artiste_index') }}"> 🧑🏻‍🎨​ Artiste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">🚪 Sign Out</a>
                     </li>
                 </ul>
             </div>

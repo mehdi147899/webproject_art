@@ -31,45 +31,132 @@
           height: 500px;
           object-fit: cover;
       }
-      
+      <style>
+        body {
+          padding-top: 60px; /* Add padding equal to navbar height to prevent content overlap */
+      }
+
+      header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1030; /* Ensures the navbar is above all other elements */
+          background-color: #ffffff; /* Navbar background */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+      }
+        .logo h1 {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff7a3f;
+            margin: 0;
+        }
+
+        .sitename {
+            color: #ff7a3f;
+        }
+
+        nav#navmenu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav#navmenu ul li {
+            position: relative;
+        }
+
+        nav#navmenu ul li a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        nav#navmenu ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+        }
+
+        nav#navmenu ul li:hover ul {
+            display: block;
+        }
+
+        nav#navmenu ul li ul li {
+            padding: 5px 20px;
+        }
+
+        nav#navmenu ul li ul li a {
+            color: black;
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            nav#navmenu ul {
+                flex-direction: column;
+                display: none;
+            }
+
+            nav#navmenu.show ul {
+                display: flex;
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+                cursor: pointer;
+            }
+
+            .btn-getstarted {
+                margin-top: 10px;
+            }
+        }
+    </style>
   </style>
     {% endblock %}
 </head>
 <body>
 
-<header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+  <header class="d-flex justify-content-between align-items-center px-3 py-2">
+    <a href="{{ path('app_home') }}" class="logo d-flex align-items-center">
+        <h1 class="sitename">Allegui</h1><span>.</span>
+    </a>
+    <i class="mobile-nav-toggle bi bi-list" id="mobile-nav-toggle"></i>
+    <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="{{ path('app_home') }}" class="active">Home</a></li>
+            <li class="dropdown">
+                <a href="{{ path('app_galerie') }}">
+                    <span>Œuvres originales</span> <i class="bi bi-chevron-down toggle-dropdown"></i>
+                </a>
+                <ul>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau Abstrait' }) }}">Tableau Abstrait</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau moderne' }) }}">Tableau Moderne</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau pop art' }) }}">Tableau Pop Art</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau street art' }) }}">Tableau Street Art</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau XXL' }) }}">Tableau XXL</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Galerie des clients' }) }}">Galerie des Clients</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
+            <li><a href="{{ path('app_artistes') }}">Artiste</a></li>
+            <li><a href="{{ path('app_contact') }}">Contact</a></li>
 
-    {% block header %}
-          <a href="{{ path('app_home') }}" class="logo d-flex align-items-center me-auto me-xl-0">
-            <h1 class="sitename">Allegui</h1><span>.</span>
-          </a>
-    
-<nav id="navmenu" class="navmenu">
-    <ul>
-        <li><a href="{{ path('app_home') }}" class="active">Home</a></li>
-        <li class="dropdown">
-          <a href="{{ path('app_galerie') }}"><span>Œuvres originales</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau Abstrait' }) }}">Tableau Abstrait</a></li>
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau moderne' }) }}">Tableau Moderne</a></li>
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau pop art' }) }}">Tableau Pop Art</a></li>
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau street art' }) }}">Tableau Street Art</a></li>
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau XXL' }) }}">Tableau XXL</a></li>
-                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Galerie des clients' }) }}">Galerie des Clients</a></li>
-            </ul>
-        </li>
-        <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
-        <li><a href="{{ path('app_artistes') }}">Artiste</a></li>
-      </ul>
-    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-</nav>
-
-    
-          <a class="btn-getstarted" href="{{ path('app_login') }}">Login</a>
-    {% endblock %}
-  </div>
+        </ul>
+    </nav>
+    <a class="btn-getstarted btn btn-primary" href="{{ path('app_login') }}">Login</a>
 </header>
 
     <!-- Main Content Block -->

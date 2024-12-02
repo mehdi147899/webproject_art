@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArtisteRepository;
 use App\Repository\ProduitRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +13,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
-    {
-        return $this->render('home/index.html.twig');
+    public function index(ArtisteRepository $artisteRepository): Response
+    { // Fetch all artistes from the database
+        $artistes = $artisteRepository->findAll();
+
+        return $this->render('home/index.html.twig', [
+            'artistes' => $artistes,
+        ]);
     }
     #[Route('/Galerie', name: 'app_galerie')]
     public function galerie(ProduitRepository $produitRepository, PaginatorInterface $paginator, Request $request): Response
@@ -36,17 +41,17 @@ class HomeController extends AbstractController
     {
         // Fetch the product by its ID
         $produit = $produitRepository->find($id);
-    
+
         if (!$produit) {
             throw $this->createNotFoundException('Le produit demandé est introuvable.');
         }
-    
+
         return $this->render('home/GalItem.html.twig', [
             'produit' => $produit,
         ]);
 
     }
-    
+
     #[Route('/Galerie/categorie/{Categorie}', name: 'app_galerie_categorie')]
     public function galerieParCategorie(ProduitRepository $produitRepository, PaginatorInterface $paginator, Request $request, string $Categorie): Response
     {
@@ -55,20 +60,30 @@ class HomeController extends AbstractController
             ->where('p.Categorie = :Categorie')
             ->setParameter('Categorie', $Categorie)
             ->getQuery();
-    
+
         // Paginer la requête
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), // Numéro de la page actuelle
             9 // Nombre de produits par page
         );
-    
+
         return $this->render('home/galerie_par_categorie.html.twig', [
             'pagination' => $pagination,
             'Categorie' => $Categorie,
         ]);
     }
-    
-    
+    #[Route('/art', name: 'Artiste_index')]
+    public function Artiste(ArtisteRepository $artisteRepository): Response
+    {
+        // Fetch all artistes from the database
+        $artistes = $artisteRepository->findAll();
+
+        return $this->render('home/Artiste.html.twig', [
+            'artistes' => $artistes,
+        ]);
+    }
+
+
 
 }

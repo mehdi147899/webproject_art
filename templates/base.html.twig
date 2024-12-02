@@ -45,31 +45,26 @@
             <h1 class="sitename">Allegui</h1><span>.</span>
           </a>
     
-          <nav id="navmenu" class="navmenu">
+<nav id="navmenu" class="navmenu">
+    <ul>
+        <li><a href="{{ path('app_home') }}" class="active">Home</a></li>
+        <li class="dropdown">
+          <a href="{{ path('app_galerie') }}"><span>Œuvres originales</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="{{ path('app_home') }}" class="active">home</a></li>
-              <li class="dropdown"><a href="#"><span>Œuvres originales</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="{{ path('app_home') }}">Dropdown 1</a></li>
-                  <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul>
-                      <li><a href="{{ path('app_home') }}">Deep Dropdown 1</a></li>
-                      <li><a href="#">Deep Dropdown 2</a></li>
-                      <li><a href="#">Deep Dropdown 3</a></li>
-                      <li><a href="#">Deep Dropdown 4</a></li>
-                      <li><a href="#">Deep Dropdown 5</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#">Dropdown 2</a></li>
-                  <li><a href="#">Dropdown 3</a></li>
-                  <li><a href="#">Dropdown 4</a></li>
-                </ul>
-              </li>
-              <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
-              <li><a href="{{ path('app_login') }}">Portfolio</a></li>
-    
-              <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-          </nav>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau Abstrait' }) }}">Tableau Abstrait</a></li>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau moderne' }) }}">Tableau Moderne</a></li>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau pop art' }) }}">Tableau Pop Art</a></li>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'tableau street art' }) }}">Tableau Street Art</a></li>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Tableau XXL' }) }}">Tableau XXL</a></li>
+                <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Galerie des clients' }) }}">Galerie des Clients</a></li>
+            </ul>
+        </li>
+        <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
+        <li><a href="{{ path('app_login') }}">Portfolio</a></li>
+    </ul>
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+</nav>
+
     
           <a class="btn-getstarted" href="{{ path('app_login') }}">Login</a>
     {% endblock %}

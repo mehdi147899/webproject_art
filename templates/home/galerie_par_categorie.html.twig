@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Galerie{% endblock %}
+{% block title %}Galerie - {{ Categorie }}{% endblock %}
 
 {% block body %}
 <section id="galerie" class="galerie section">
     <div class="container">
+        <h2 class="text-center my-5 titre-galerie">{{ Categorie }}</h2>
         <div class="row">
             {% for produit in pagination.items %}
                 <div class="col-lg-4 mb-4">
@@ -22,7 +23,7 @@
                     </a>
                 </div>
             {% else %}
-                <p class="text-center">Aucun produit disponible pour le moment.</p>
+                <p class="text-center">Aucun produit disponible pour la catégorie "{{ Categorie }}".</p>
             {% endfor %}
         </div>
 

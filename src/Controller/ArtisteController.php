@@ -1,6 +1,5 @@
 <?php
 
-// src/Controller/ArtisteController.php
 
 namespace App\Controller;
 
@@ -26,15 +25,20 @@ class ArtisteController extends AbstractController
     }
 
     #[Route('/new', name: 'artiste_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ArtisteRepository $artisteRepository): Response
     {
+        // Check if there is already an artist
+        if ($artisteRepository->count([]) > 0) {
+            $this->addFlash('warning', 'An artist already exists. You cannot add more.');
+            return $this->redirectToRoute('artiste_index');
+        }
+
         $artiste = new Artiste();
         $form = $this->createForm(ArtisteType::class, $artiste);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle the image upload (if needed)
+            // Handle the image upload
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
@@ -49,7 +53,6 @@ class ArtisteController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Artiste created successfully!');
-
             return $this->redirectToRoute('artiste_index');
         }
 
@@ -57,6 +60,7 @@ class ArtisteController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'artiste_show', methods: ['GET'])]
     public function show(Artiste $artiste): Response
@@ -83,7 +87,7 @@ class ArtisteController extends AbstractController
                 try {
                     // Move the file to the directory where images are stored
                     $file->move(
-                        $this->getParameter('upload_directory'), // Define the directory in services.yaml
+                        $this->getParameter('uploads_directory'), // Define the directory in services.yaml
                         $newFilename
                     );
                     // Update the image path in the entity
@@ -109,11 +113,20 @@ class ArtisteController extends AbstractController
     #[Route('/{id}', name: 'artiste_delete', methods: ['POST'])]
     public function delete(Request $request, Artiste $artiste, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$artiste->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $artiste->getId(), $request->request->get('_token'))) {
             $entityManager->remove($artiste);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('artiste_index');
     }
+    #[Route('/artistes', name: 'app_artistes')]
+    public function showAllArtistes(ArtisteRepository $artisteRepository): Response
+    {
+
+        return $this->render('home/Artiste.html.twig', [
+            'artistes' => $artisteRepository->findAll(),
+        ]);
+    }
+
 }

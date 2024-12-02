@@ -49,7 +49,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         
         $user = $token->getUser();
         
-         return new RedirectResponse($this->urlGenerator->generate('produit_new'));
+         return new RedirectResponse($this->urlGenerator->generate('artiste_index'));
     }
 
     protected function getLoginUrl(Request $request): string

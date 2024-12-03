@@ -1,0 +1,30 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Upcoming Events</h2>
+
+        <div class="row">
+            {% for evenement in evenements %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <img src="{{ asset('uploads/' ~ evenement.image) }}" class="card-img-top" alt="{{ evenement.name }}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ evenement.name }}</h5>
+                            <p class="card-text"><strong>Date:</strong> {{ evenement.date|date('d-m-Y H:i') }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ evenement.lieu }}</p>
+                            <p class="card-text">{{ evenement.description|slice(0, 100) ~ '...' }}</p>
+                            <a href="{{ path('evenement_show', {'id': evenement.id}) }}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        No events available at the moment.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

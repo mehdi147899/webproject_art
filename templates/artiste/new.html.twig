@@ -6,43 +6,72 @@
 
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card shadow-sm">
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
                             {{ form_start(form) }}
                             
+                            <!-- Artist Name -->
                             <div class="mb-3">
                                 {{ form_label(form.Nom, 'Full Name', {'attr': {'class': 'form-label'}}) }}
                                 {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist name'}}) }}
                                 {{ form_errors(form.Nom) }}
                             </div>
 
+                            <!-- Artist Surname -->
                             <div class="mb-3">
                                 {{ form_label(form.prenom, 'Surname', {'attr': {'class': 'form-label'}}) }}
                                 {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist surname'}}) }}
                                 {{ form_errors(form.prenom) }}
                             </div>
 
+                            <!-- Biography -->
                             <div class="mb-3">
                                 {{ form_label(form.bio, 'Biography', {'attr': {'class': 'form-label'}}) }}
                                 {{ form_widget(form.bio, {'attr': {'class': 'form-control', 'placeholder': 'Enter artist biography', 'rows': 4}}) }}
                                 {{ form_errors(form.bio) }}
                             </div>
 
+                            <!-- Image -->
                             <div class="mb-3">
                                 {{ form_label(form.image, 'Image', {'attr': {'class': 'form-label'}}) }}
                                 {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
                                 {{ form_errors(form.image) }}
                             </div>
 
+                            <!-- Date of Birth -->
                             <div class="mb-3">
                                 {{ form_label(form.date_de_naissance, 'Date of Birth', {'attr': {'class': 'form-label'}}) }}
                                 {{ form_widget(form.date_de_naissance, {'attr': {'class': 'form-control'}}) }}
                                 {{ form_errors(form.date_de_naissance) }}
                             </div>
 
+                            <!-- Video URLs -->
+                            <div class="mb-3">
+                                {{ form_label(form.videoUrls, 'Video URLs', {'attr': {'class': 'form-label'}}) }}
+                                
+                                {# Use the value from the form and display it correctly as a comma-separated list #}
+                                {% set videoUrlsString = form.videoUrls.vars.value is iterable ? form.videoUrls.vars.value | join(', ') : '' %}
+                                
+                                {{ form_widget(form.videoUrls, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Enter video URLs separated by commas',
+                                        'rows': 3
+                                    },
+                                    'value': videoUrlsString
+                                }) }}
+                                
+                                <small class="form-text text-muted">
+                                    Enter multiple video URLs separated by commas. Example: 
+                                    <code>https://www.youtube.com/embed/abc123, https://player.vimeo.com/video/456xyz</code>
+                                </small>
+                                {{ form_errors(form.videoUrls) }}
+                            </div>
+
+                            <!-- Submit Button -->
                             <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-warning btn-lg">Create Artiste</button>
+                                <button type="submit" class="btn btn-warning btn-lg px-5">Create Artiste</button>
                             </div>
                             
                             {{ form_end(form) }}

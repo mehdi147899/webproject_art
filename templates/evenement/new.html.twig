@@ -1,0 +1,25 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Create New Event</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {{ form_start(form) }}
+                            
+                            {{ form_widget(form) }}
+                            
+                            <button type="submit" class="btn btn-primary">Create Event</button>
+                            
+                            {{ form_end(form) }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

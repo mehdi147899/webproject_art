@@ -24,6 +24,9 @@ class ArtisteController extends AbstractController
         ]);
     }
 
+
+    // src/Controller/ArtisteController.php
+
     #[Route('/new', name: 'artiste_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ArtisteRepository $artisteRepository): Response
     {
@@ -49,6 +52,19 @@ class ArtisteController extends AbstractController
                 $artiste->setImage($newFilename);
             }
 
+            // Handle the video URLs transformation (from "https://www.youtube.com/watch?v=VIDEO_ID" to embed URL)
+            $videoUrls = $form->get('videoUrls')->getData();
+            if ($videoUrls) {
+                // Convert each URL
+                $videoUrlsArray = array_map(function ($url) {
+                    return $this->convertToEmbedUrl($url); // Use the helper function to convert URL to embed format
+                }, explode(',', $videoUrls));  // Allow multiple URLs, split by commas
+
+                // Join all the embed URLs into a single string (comma-separated)
+                $artiste->setVideoUrls(implode(', ', $videoUrlsArray));
+            }
+
+            // Persist the new Artiste
             $entityManager->persist($artiste);
             $entityManager->flush();
 
@@ -62,6 +78,13 @@ class ArtisteController extends AbstractController
     }
 
 
+
+
+
+
+
+
+
     #[Route('/{id}', name: 'artiste_show', methods: ['GET'])]
     public function show(Artiste $artiste): Response
     {
@@ -73,21 +96,20 @@ class ArtisteController extends AbstractController
     #[Route('/{id}/edit', name: 'artiste_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Artiste $artiste, EntityManagerInterface $entityManager): Response
     {
+        // Create the form
         $form = $this->createForm(ArtisteType::class, $artiste);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle file upload manually
+            // Handle the file upload manually (image)
             $file = $form->get('image')->getData();
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                // Generate a unique name for the file
                 $newFilename = uniqid() . '-' . $originalFilename . '.' . $file->guessExtension();
 
                 try {
-                    // Move the file to the directory where images are stored
                     $file->move(
-                        $this->getParameter('uploads_directory'), // Define the directory in services.yaml
+                        $this->getParameter('uploads_directory'), // The directory path where the image will be stored
                         $newFilename
                     );
                     // Update the image path in the entity
@@ -98,9 +120,20 @@ class ArtisteController extends AbstractController
                 }
             }
 
+            // Handle video URLs transformation (ensure URLs are in the embed format)
+            $videoUrls = $form->get('videoUrls')->getData();
+            if ($videoUrls) {
+                $convertedUrls = array_map(
+                    fn($url) => $this->convertToEmbedUrl(trim($url)),
+                    explode(',', $videoUrls)
+                );
+                $artiste->setVideoUrls(implode(', ', $convertedUrls));
+            }
+
             // Save changes to the database
             $entityManager->flush();
 
+            // Redirect to the artist index after saving
             return $this->redirectToRoute('artiste_index');
         }
 
@@ -109,6 +142,31 @@ class ArtisteController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * Convert YouTube URL to Embed URL.
+     * 
+     * @param string $url The YouTube URL.
+     * 
+     * @return string The embed URL.
+     */
+    private function convertToEmbedUrl(string $url): string
+    {
+        $patterns = [
+            '/(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/)([a-zA-Z0-9_-]{11}))/i',
+            '/(?:https?:\/\/(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11}))/i',
+            '/(?:https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11}))/i'
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $matches)) {
+                return 'https://www.youtube.com/embed/' . $matches[1];
+            }
+        }
+
+        return $url; // Return original URL if no match
+    }
+
 
     #[Route('/{id}', name: 'artiste_delete', methods: ['POST'])]
     public function delete(Request $request, Artiste $artiste, EntityManagerInterface $entityManager): Response
@@ -121,8 +179,8 @@ class ArtisteController extends AbstractController
         return $this->redirectToRoute('artiste_index');
     }
 
-    
-    
-    
+
+
+
 
 }

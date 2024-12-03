@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Evenement;
 use App\Repository\ArtisteRepository;
 use App\Repository\ProduitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +85,46 @@ class HomeController extends AbstractController
             'artistes' => $artistes,
         ]);
     }
+    #[Route('/event', name: 'Event-app')]
+    public function indexEvent(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
+    {
+        $lieuFilter = $request->query->get('lieu', null); // Get the selected lieu
+        $dateOrder = $request->query->get('date_order', 'asc'); // Get the date order, default to ascending
 
+        // Build the query
+        $queryBuilder = $entityManager->getRepository(Evenement::class)
+            ->createQueryBuilder('e');
+
+        // Apply lieu filter if selected
+        if ($lieuFilter) {
+            $queryBuilder->andWhere('e.lieu = :lieu')
+                ->setParameter('lieu', $lieuFilter);
+        }
+
+        // Order by date
+        $queryBuilder->orderBy('e.date', $dateOrder);
+
+        // Paginate results
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            9
+        );
+
+        // Fetch all unique lieux for the filter dropdown
+        $lieux = $entityManager->getRepository(Evenement::class)
+            ->createQueryBuilder('e')
+            ->select('DISTINCT e.lieu')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('home/indexE.html.twig', [
+            'evenements' => $pagination,
+            'lieux' => $lieux,
+            'selected_lieu' => $lieuFilter,
+            'selected_date_order' => $dateOrder,
+        ]);
+    }
 
 
 }

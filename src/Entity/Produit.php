@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -19,7 +20,7 @@ class Produit
     #[ORM\Column(length: 255)]
     private ?string $Description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $Prix = null;
 
     #[ORM\Column(length: 255)]

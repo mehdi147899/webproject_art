@@ -1,6 +1,7 @@
 <?php
 
 // src/Form/ArtisteType.php
+
 namespace App\Form;
 
 use App\Entity\Artiste;
@@ -42,6 +43,11 @@ class ArtisteType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid image (JPEG/PNG)',
                     ]),
                 ],
+            ])
+            ->add('videoUrls', TextareaType::class, [
+                'required' => false,
+                'mapped' => false, // Keep it unmapped as we are manually handling it
+                'attr' => ['placeholder' => 'Enter video URLs separated by commas'],
             ]);
     }
 

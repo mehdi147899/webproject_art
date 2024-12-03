@@ -28,6 +28,9 @@ class Artiste
     #[ORM\Column(type: "date")]
     private ?\DateTimeInterface $date_de_naissance = null;
 
+    #[ORM\Column(type: 'string', length: 1000, nullable: true)] // Increase length if necessary
+    private ?string $videoUrls = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,4 +107,17 @@ class Artiste
         $age = $now->diff($this->date_de_naissance);
         return $age->y; // Returns the age in years
     }
+    public function getVideoUrls(): ?string
+    {
+        return $this->videoUrls;
+    }
+
+    // Set the video URLs as a single string
+    public function setVideoUrls(?string $videoUrls): static
+    {
+        $this->videoUrls = $videoUrls;
+
+        return $this;
+    }
+
 }

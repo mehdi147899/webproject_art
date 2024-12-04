@@ -145,10 +145,18 @@
     <i class="mobile-nav-toggle bi bi-list" id="mobile-nav-toggle"></i>
     <nav id="navmenu" class="navmenu">
       <ul>
+      
           <li><a href="{{ path('app_home') }}" class="{{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">Home</a></li>
           <li><a href="{{ path('Event-app') }}" class="{{ app.request.attributes.get('_route') == 'Event-app' ? 'active' : '' }}">Evenement</a></li>
-          <li><a href="{{ path('app_galerie') }}" class="{{ app.request.attributes.get('_route') == 'app_galerie' ? 'active' : '' }}">Galerie</a></li>
-          <li><a href="{{ path('Artiste_index') }}" class="{{ app.request.attributes.get('_route') == 'Artiste_index' ? 'active' : '' }}">Artiste</a></li>
+                <li class="dropdown">
+                <a href="{{ path('app_galerie') }}">
+                    <span>Galerie</span> <i class="bi bi-chevron-down toggle-dropdown"></i>
+                </a>
+                <ul>
+                    <li><a href="{{ path('app_galerie') }}">Galerie</a></li>
+                    <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Apern Galerie' }) }}">Apern Galerie</a></li>
+                </ul>
+            </li>          <li><a href="{{ path('Artiste_index') }}" class="{{ app.request.attributes.get('_route') == 'Artiste_index' ? 'active' : '' }}">Artiste</a></li>
           <li><a href="{{ path('app_contact') }}" class="{{ app.request.attributes.get('_route') == 'app_contact' ? 'active' : '' }}">Contact</a></li>
       </ul>
   </nav>

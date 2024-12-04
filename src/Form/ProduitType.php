@@ -30,10 +30,8 @@ class ProduitType extends AbstractType
             ])
             ->add('Categorie', ChoiceType::class, [
                 'choices' => [
-                    'Électronique' => 'electronique',
-                    'Vêtements' => 'vetements',
-                    'Maison' => 'maison',
-                    'Autre' => 'autre'
+                    'Galerie' => 'Galerie',
+                    'Apern Galerie' => 'Apern Galerie'
                 ],
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Catégorie'

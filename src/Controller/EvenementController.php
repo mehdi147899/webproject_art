@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,13 +14,43 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EvenementController extends AbstractController
 {
     #[Route('/evenement', name: 'app_evenement')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
-        $evenements = $entityManager->getRepository(Evenement::class)->findAll();
+        $lieuFilter = $request->query->get('lieu', null); // Get the selected lieu
+        $dateOrder = $request->query->get('date_order', 'asc'); // Get the date order, default to ascending
 
-        // Render the view with the events
+        // Build the query
+        $queryBuilder = $entityManager->getRepository(Evenement::class)
+            ->createQueryBuilder('e');
+
+        // Apply lieu filter if selected
+        if ($lieuFilter) {
+            $queryBuilder->andWhere('e.lieu = :lieu')
+                ->setParameter('lieu', $lieuFilter);
+        }
+
+        // Order by date
+        $queryBuilder->orderBy('e.date', $dateOrder);
+
+        // Paginate results
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            9
+        );
+
+        // Fetch all unique lieux for the filter dropdown
+        $lieux = $entityManager->getRepository(Evenement::class)
+            ->createQueryBuilder('e')
+            ->select('DISTINCT e.lieu')
+            ->getQuery()
+            ->getResult();
+
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenements,
+            'evenements' => $pagination,
+            'lieux' => $lieux,
+            'selected_lieu' => $lieuFilter,
+            'selected_date_order' => $dateOrder,
         ]);
     }
     #[Route('/evenement/new', name: 'evenement_new')]
@@ -88,4 +119,17 @@ class EvenementController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/event/{id}/delete', name: 'evenement_delete')]
+
+    public function delete(Evenement $event, EntityManagerInterface $em): Response
+    {
+        $em->remove($event);
+        $em->flush();
+
+        $this->addFlash('success', 'Event deleted successfully.');
+
+        return $this->redirectToRoute('app_evenement');
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Evenement;
 use App\Repository\ArtisteRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ArtisteRepository $artisteRepository): Response
+    public function index(ArtisteRepository $artisteRepository,EvenementRepository $evenementRepository): Response
     { // Fetch all artistes from the database
         $artistes = $artisteRepository->findAll();
+        $nearestEvents = $evenementRepository->findBy([], ['date' => 'ASC'], 4);
 
         return $this->render('home/index.html.twig', [
             'artistes' => $artistes,
+            'events' => $nearestEvents,
         ]);
     }
     #[Route('/Galerie', name: 'app_galerie')]
@@ -126,5 +129,12 @@ class HomeController extends AbstractController
         ]);
     }
 
-
+    #[Route('/event/{id}', name: 'evenement_Details')]
+    public function show(Evenement $evenement): Response
+    {
+        return $this->render('home/DetailsEvent.html.twig', [
+            'evenement' => $evenement,
+        ]);
+    }
+   
 }

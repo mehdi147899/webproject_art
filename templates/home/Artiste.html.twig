@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4" style="margin-top: 150px;">{{ 'artiste.title'|trans }}</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for artiste in artistes %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <!-- Image on the left -->
+                            <div class="col-md-4">
+                                <img src="{{ asset('uploads/' ~ artiste.image) }}" alt="{{ artiste.Nom }}" class="img-fluid rounded-start">
+                            </div>
+
+                            <!-- Text content on the right -->
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ artiste.Nom }} {{ artiste.prenom }}</h5>
+                                    
+                                    <!-- Date of Birth -->
+                                    <p class="card-text"><strong>{{ 'artiste.date_of_birth'|trans }}:</strong> {{ artiste.dateDeNaissance|date('d-m-Y') }}</p>
+
+                                    <!-- Biography based on locale -->
+                                    <p class="card-text">
+                                        {% if app.request.locale == 'en' %}
+                                            {{ artiste.bioEn }}
+                                        {% elseif app.request.locale == 'fr' %}
+                                            {{ artiste.bioFr }}
+                                        {% elseif app.request.locale == 'de' %}
+                                            {{ artiste.bioDe }}
+                                        {% else %}
+                                            {{ artiste.bioFr }} {# Default to French #}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Section -->
+                        {% if artiste.videoUrls is not empty %}
+                            <div class="mt-3">
+                                <h6>{{ 'artiste.videos'|trans }}</h6>
+                                <ul class="list-unstyled">
+                                    {% set videoUrls = artiste.videoUrls|split(',') %}
+                                    {% for videoUrl in videoUrls %}
+                                        <li class="mb-3">
+                                            <iframe width="100%" height="315" src="{{ videoUrl|trim }}" frameborder="0" allowfullscreen></iframe>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="text-center">{{ 'artiste.no_artists'|trans }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'pagecontact.page_title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">{{ 'pagecontact.heading'|trans }}</h2>
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            {{ form_start(form) }}
+
+            <div class="mb-3">
+                {{ form_label(form.Nom, null, {'label': 'pagecontact.labels.name'|trans}) }}
+                {{ form_widget(form.Nom, { 'attr': {'class': 'form-control', 'placeholder': 'pagecontact.placeholders.name'|trans} }) }}
+                {{ form_errors(form.Nom) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Email, null, {'label': 'pagecontact.labels.email'|trans}) }}
+                {{ form_widget(form.Email, { 'attr': {'class': 'form-control', 'placeholder': 'pagecontact.placeholders.email'|trans} }) }}
+                {{ form_errors(form.Email) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Message, null, {'label': 'pagecontact.labels.message'|trans}) }}
+                {{ form_widget(form.Message, { 'attr': {'class': 'form-control', 'placeholder': 'pagecontact.placeholders.message'|trans, 'rows': 5} }) }}
+                {{ form_errors(form.Message) }}
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">{{ 'pagecontact.submit_button'|trans }}</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.nom }} - Détails{% endblock %}
+
+{% block body %}
+<section id="produit-detail" class="produit-detail section" style="margin-top: 150px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-img">
+                    <img src="assets/img/blog/blog-5.jpg" alt="{{ produit.nom }}" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2>{{ produit.nom }}</h2>
+                <p><strong>Description:</strong> {{ produit.description }}</p>
+                <p><strong>Prix:</strong> {{ produit.prix }} €</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

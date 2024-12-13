@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie - {{ Categorie }}{% endblock %}
+
+{% block body %}
+<section id="galerie" class="galerie section">
+    <div class="container">
+        <h2 class="text-center my-5 titre-galerie">{{ Categorie }}</h2>
+        <div class="row">
+            {% for produit in pagination.items %}
+                <div class="col-lg-4 mb-4">
+                    <a href="{{ path('app_galerie_detail', {'id': produit.id}) }}" class="text-decoration-none">
+                        <article class="text-center" style="color: black;"> <!-- Centrer le contenu de l'article et mettre le texte en noir -->
+
+                            <div class="post-img">
+                                <img src="{{ asset('uploads/' ~ produit.image) }}" 
+                                     alt="{{ produit.nom }}" 
+                                     class="img-fluid img-thumbnail fixed-size-img">
+                            </div>
+                            <p class="post-category fw-bold">{{ produit.nom }}</p> <!-- Titre en gras -->
+                        </article>
+                    </a>
+                </div>
+            {% else %}
+                <p class="text-center">Aucun produit disponible pour la catégorie "{{ Categorie }}".</p>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+</section>
+{% endblock %}

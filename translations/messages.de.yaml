@@ -1,0 +1,72 @@
+home: "Startseite"
+event: "Veranstaltung"
+gallery: "Galerie"
+apern_gallery: "Apern Galerie"
+artist: "Künstler"
+contact: "Kontakt"
+
+menu:
+  home: "Startseite"
+  gallery: "Galerie"
+
+homepage:
+  title: "Rachid Allegui"
+  greeting: "Hallo"
+  intro: "Ich bin Rachid Allegui"
+  gallery_section_title: "Galerie"
+  gallery_subtitle: "Die einzigartige künstlerische Welt von Rachid Allegui"
+  gallery_description: "Entdecken Sie die einzigartige künstlerische Welt von Rachid Allegui, wo lebendige Farben und tiefe Emotionen aufeinandertreffen, um fesselnde Werke zum Leben zu erwecken. Tauchen Sie ein in eine Galerie, die Tradition und Moderne elegant verbindet."
+  explore_gallery: "Galerie entdecken"
+  nearest_events_title: "Bevorstehende Veranstaltungen"
+  portfolio_title: "Portfolio"
+  portfolio_item:
+    app1_title: "Anwendung 1"
+    app1_desc: "Lorem ipsum, dolor sit"
+  artist_section_title: "Künstler"
+  date_of_birth: "Geburtsdatum"
+
+events:
+  upcoming_title: "Bevorstehende Veranstaltungen"
+  filter:
+    location_label: "Ort:"
+    all_locations: "Alle Orte"
+    sort_date_label: "Nach Datum sortieren:"
+    sort_asc: "Nächstgelegene zuerst"
+    sort_desc: "Am weitesten entfernte zuerst"
+    submit: "Filtern"
+  card:
+    date_label: "Datum:"
+    location_label: "Ort:"
+    view_details: "Details anzeigen"
+  no_events_message: "Keine Veranstaltungen für die ausgewählten Filter verfügbar."
+
+pagecontact:
+  page_title: "Kontaktieren Sie uns"
+  heading: "Kontakt"
+  labels:
+    name: "Name:"
+    email: "E-Mail:"
+    message: "Nachricht:"
+  placeholders:
+    name: "Geben Sie Ihren Namen ein"
+    email: "Geben Sie Ihre E-Mail-Adresse ein"
+    message: "Geben Sie Ihre Nachricht ein"
+  submit_button: "Senden"
+
+artiste:
+  title: "Künstler"
+  date_of_birth: "Geburtsdatum"
+  videos: "Videos"
+  no_artists: "Keine Künstler gefunden."
+
+event_detail:
+  title: "Veranstaltungsdetails"
+  date_label: "Datum:"
+  location_label: "Ort:"
+  description_label: "Beschreibung:"
+  back_to_events: "Zurück zu den Veranstaltungen"
+
+product_detail:
+  title: "Produktdetails"
+  description_label: "Beschreibung:"
+  price_label: "Preis:"

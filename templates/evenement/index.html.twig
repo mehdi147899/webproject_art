@@ -1,0 +1,79 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="margin-top: 50px;">Upcoming Events</h2>
+
+    <!-- Add Event Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ path('evenement_new') }}" class="btn btn-success">➕ Add Event</a>
+    </div>
+
+    <!-- Filter Form -->
+    <form method="get" class="mb-4">
+        <div class="row align-items-end">
+            <!-- Lieu Filter -->
+            <div class="col-md-4">
+                <label for="lieu" class="form-label">Location:</label>
+                <select name="lieu" id="lieu" class="form-select">
+                    <option value="">All Locations</option>
+                    {% for lieu in lieux %}
+                        <option value="{{ lieu.lieu }}" {% if lieu.lieu == selected_lieu %}selected{% endif %}>
+                            {{ lieu.lieu }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date Sorting -->
+            <div class="col-md-4">
+                <label for="date_order" class="form-label">Sort by Date:</label>
+                <select name="date_order" id="date_order" class="form-select">
+                    <option value="asc" {% if selected_date_order == 'asc' %}selected{% endif %}>Nearest First</option>
+                    <option value="desc" {% if selected_date_order == 'desc' %}selected{% endif %}>Furthest First</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Event Cards -->
+    <div class="row">
+        {% for evenement in evenements %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ asset('uploads/' ~ evenement.image) }}" class="card-img-top" alt="{{ evenement.getName(app.request.locale) }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ evenement.getName(app.request.locale) }}</h5>
+                        <p class="card-text"><strong>Date:</strong> {{ evenement.date|date('d-m-Y H:i') }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ evenement.lieu }}</p>
+                        <p class="card-text">{{ evenement.getDescription(app.request.locale)|slice(0, 100) ~ '...' }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('evenement_edit', {'id': evenement.id}) }}" class="btn btn-warning">Modifier</a>
+                            <form method="POST" action="{{ path('evenement_delete', {'id': evenement.id}) }}" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    No events available for the selected filters.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="mt-4">
+        {{ knp_pagination_render(evenements) }}
+    </div>
+</div>
+{% endblock %}

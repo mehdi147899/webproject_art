@@ -1,0 +1,72 @@
+home: "Accueil"
+event: "Événement"
+gallery: "Galerie"
+apern_gallery: "Galerie Apern"
+artist: "Artiste"
+contact: "Contact"
+
+menu:
+  home: "Accueil"
+  gallery: "Galerie"
+
+homepage:
+  title: "Rachid Allegui"
+  greeting: "Bonjour"
+  intro: "Je suis Rachid Allegui"
+  gallery_section_title: "Galerie"
+  gallery_subtitle: "L'univers artistique unique de Rachid Allegui"
+  gallery_description: "Découvrez l'univers artistique unique de Rachid Allegui, où des couleurs vives et des émotions profondes se rencontrent pour donner vie à des œuvres captivantes. Plongez dans une galerie qui mêle élégamment tradition et modernité."
+  explore_gallery: "Découvrir la galerie"
+  nearest_events_title: "Événements à venir"
+  portfolio_title: "Portfolio"
+  portfolio_item:
+    app1_title: "Application 1"
+    app1_desc: "Lorem ipsum, dolor sit"
+  artist_section_title: "Artiste"
+  date_of_birth: "Date de naissance"
+
+events:
+  upcoming_title: "Événements à venir"
+  filter:
+    location_label: "Lieu :"
+    all_locations: "Tous les lieux"
+    sort_date_label: "Trier par date :"
+    sort_asc: "Les plus proches d'abord"
+    sort_desc: "Les plus éloignés d'abord"
+    submit: "Filtrer"
+  card:
+    date_label: "Date :"
+    location_label: "Lieu :"
+    view_details: "Voir les détails"
+  no_events_message: "Aucun événement disponible pour les filtres sélectionnés."
+
+pagecontact:
+  page_title: "Contactez-nous"
+  heading: "Contact"
+  labels:
+    name: "Nom :"
+    email: "E-mail :"
+    message: "Message :"
+  placeholders:
+    name: "Entrez votre nom"
+    email: "Entrez votre e-mail"
+    message: "Entrez votre message"
+  submit_button: "Envoyer"
+
+artiste:
+  title: "Artiste"
+  date_of_birth: "Date de naissance"
+  videos: "Vidéos"
+  no_artists: "Aucun artiste trouvé."
+
+event_detail:
+  title: "Détails de l'Événement"
+  date_label: "Date :"
+  location_label: "Lieu :"
+  description_label: "Description :"
+  back_to_events: "Retour aux Événements"
+
+product_detail:
+  title: "Détails du Produit"
+  description_label: "Description :"
+  price_label: "Prix :"

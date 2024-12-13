@@ -1,0 +1,67 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #FF9D3D; color: white;">
+            <h3 class="card-title mb-0">Liste des Produits</h3>
+<a href="{{ path('produit_new') }}" class="btn btn-light">➕ Ajouter un Produit</a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom du Produit</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">
+                            <!-- Static descriptions based on locale -->
+                            {% if app.request.locale == 'en' %}
+                                Description (English)
+                            {% elseif app.request.locale == 'fr' %}
+                                Description (Français)
+                            {% elseif app.request.locale == 'de' %}
+                                Beschreibung (Deutsch)
+                            {% else %}
+                                Description
+                            {% endif %}
+                        </th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produit in produits %}
+                        <tr>
+                            <td>{{ produit.nom }}</td>
+                            <td>{{ produit.prix }} €</td>
+                            <td>
+                                {% if app.request.locale == 'en' %}
+                                    {{ produit.descriptionEn|length > 100 ? produit.descriptionEn|slice(0, 100) ~ '...' : produit.descriptionEn }}
+                                {% elseif app.request.locale == 'fr' %}
+                                    {{ produit.descriptionFr|length > 100 ? produit.descriptionFr|slice(0, 100) ~ '...' : produit.descriptionFr }}
+                                {% elseif app.request.locale == 'de' %}
+                                    {{ produit.descriptionDe|length > 100 ? produit.descriptionDe|slice(0, 100) ~ '...' : produit.descriptionDe }}
+                                {% else %}
+                                    {{ produit.descriptionFr|length > 100 ? produit.descriptionFr|slice(0, 100) ~ '...' : produit.descriptionFr }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                <form action="{{ path('app_produit_delete', {'id': produit.id}) }}" method="post" style="display: inline;">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">Aucun produit disponible pour le moment.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'Dashbase.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Profile Card -->
+            <div class="card shadow-lg">
+                <div class="row g-0">
+                    <!-- Profile Image -->
+                    <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
+                        {% if user.image %}
+                            <img src="{{ asset('uploads/' ~ user.image) }}" alt="Profile Image" 
+                                 class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        {% else %}
+                            <div class="text-center text-muted">
+                                <i class="bi bi-person-circle" style="font-size: 150px;"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- User Details -->
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+
+                            <!-- Profile Image Upload -->
+                            <form method="POST" enctype="multipart/form-data" action="{{ path('app_profile', {id: user.id}) }}">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Update Profile Image:</label>
+                                    <input type="file" name="image" id="image" class="form-control">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Icons (optional) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}

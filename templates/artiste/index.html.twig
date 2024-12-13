@@ -1,0 +1,52 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Artist List</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% if artistes|length == 0 %}
+                    <div class="text-end mb-3">
+                        <a href="{{ path('artiste_new') }}" class="btn btn-primary">Add New Artist</a>
+                    </div>
+                {% endif %}
+
+                {% for artiste in artistes %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ asset('uploads/' ~ artiste.image) }}" alt="{{ artiste.Nom }}" class="img-fluid rounded-start">
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ artiste.Nom }} {{ artiste.prenom }}</h5>
+                                    <p class="card-text">
+                                        <strong>Date of Birth:</strong> {{ artiste.dateDeNaissance|date('d-m-Y') }}
+                                    </p>
+                                    <p class="card-text">
+                                        {% if app.request.locale == 'en' %}
+                                            {{ artiste.bioEn }}
+                                        {% elseif app.request.locale == 'fr' %}
+                                            {{ artiste.bioFr }}
+                                        {% elseif app.request.locale == 'de' %}
+                                            {{ artiste.bioDe }}
+                                        {% else %}
+                                            {{ artiste.bioFr }}
+                                        {% endif %}
+                                    </p>
+                                    <div class="d-flex justify-content-end">
+                                        <a href="{{ path('artiste_edit', {'id': artiste.id}) }}" class="btn btn-warning me-2">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">No artists found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

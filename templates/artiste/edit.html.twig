@@ -1,0 +1,76 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Edit Artist</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Edit Artist: {{ artiste.Nom }} {{ artiste.prenom }}</h5>
+                        
+                        <form method="post" enctype="multipart/form-data">
+                            {{ form_start(form) }}
+                            
+                            <div class="mb-3">
+                                {{ form_label(form.Nom, 'Name') }}
+                                {{ form_widget(form.Nom, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.Nom) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.prenom, 'First Name') }}
+                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.prenom) }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bioFr" class="form-label">Biography (French)</label>
+                                {{ form_widget(form.bioFr, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                                {{ form_errors(form.bioFr) }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bioEn" class="form-label">Biography (English)</label>
+                                {{ form_widget(form.bioEn, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                                {{ form_errors(form.bioEn) }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bioDe" class="form-label">Biography (German)</label>
+                                {{ form_widget(form.bioDe, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                                {{ form_errors(form.bioDe) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.date_de_naissance, 'Date of Birth') }}
+                                {{ form_widget(form.date_de_naissance, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.date_de_naissance) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.image, 'Upload Image') }}
+                                {{ form_widget(form.image, {'attr': {'class': 'form-control-file'}}) }}
+                                {{ form_errors(form.image) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(form.videoUrls, 'Video URLs') }}
+                                {{ form_widget(form.videoUrls, {'attr': {'class': 'form-control', 'placeholder': 'Enter video URLs separated by commas'}}) }}
+                                {{ form_errors(form.videoUrls) }}
+                            </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ path('artiste_index') }}" class="btn btn-secondary">Back</a>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+
+                            {{ form_end(form) }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

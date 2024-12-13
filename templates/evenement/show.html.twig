@@ -1,0 +1,23 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">{{ evenement.getName(app.request.locale) }}</h2>
+
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ asset('uploads/' ~ evenement.image) }}" class="img-fluid rounded-start" alt="{{ evenement.getName(app.request.locale) }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ evenement.getName(app.request.locale) }}</h5>
+                        <p class="card-text"><strong>Date:</strong> {{ evenement.date|date('d-m-Y H:i') }}</p>
+                        <p class="card-text"><strong>Location:</strong> {{ evenement.lieu }}</p>
+                        <p class="card-text">{{ evenement.getDescription(app.request.locale) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

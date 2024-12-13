@@ -1,0 +1,58 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block title %}Modifier Produit{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header" style="background-color: #FF9D3D; color: white;">
+            <h3 class="card-title mb-0">Modifier le Produit</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ path('app_produit_edit', {'id': produit.id}) }}" enctype="multipart/form-data">
+                {{ form_start(form) }}
+
+                <!-- Nom -->
+                <div class="mb-3">
+                    <label for="form_Nom" class="form-label">Nom du Produit</label>
+                    {{ form_widget(form.Nom, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'} }) }}
+                </div>
+
+                <!-- Prix -->
+                <div class="mb-3">
+                    <label for="form_Prix" class="form-label">Prix</label>
+                    {{ form_widget(form.Prix, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix'} }) }}
+                </div>
+
+                <!-- Description (French) -->
+                <div class="mb-3">
+                    <label for="form_DescriptionFr" class="form-label">Description (Français)</label>
+                    {{ form_widget(form.DescriptionFr, { 'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Entrez une description en français'} }) }}
+                </div>
+
+                <!-- Description (English) -->
+                <div class="mb-3">
+                    <label for="form_DescriptionEn" class="form-label">Description (English)</label>
+                    {{ form_widget(form.DescriptionEn, { 'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Enter a description in English'} }) }}
+                </div>
+
+                <!-- Description (German) -->
+                <div class="mb-3">
+                    <label for="form_DescriptionDe" class="form-label">Beschreibung (Deutsch)</label>
+                    {{ form_widget(form.DescriptionDe, { 'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Geben Sie eine Beschreibung auf Deutsch ein'} }) }}
+                </div>
+
+                <!-- Image -->
+                <div class="mb-3">
+                    <label for="form_image" class="form-label">Image du Produit</label>
+                    {{ form_widget(form.image, { 'attr': {'class': 'form-control', 'accept': 'image/*'} }) }}
+                </div>
+
+                <button type="submit" class="btn" style="background-color: #FF9D3D; color: white;">Modifier le Produit</button>
+
+                {{ form_end(form) }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

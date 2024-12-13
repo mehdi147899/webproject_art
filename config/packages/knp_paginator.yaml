@@ -1,0 +1,5 @@
+knp_paginator:
+    page_range: 5  # Number of links in the pagination bar
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig' # Bootstrap 4 template
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig'

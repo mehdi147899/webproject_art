@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock %}</title>
+
+    {% block styles %}
+    <link href="{{ asset('assets/img/IconA.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+      rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+    <style>
+      .fixed-size-img {
+          width: 350px;
+          height: 500px;
+          object-fit: cover;
+      }
+
+      body {
+          padding-top: 60px; /* Add padding equal to navbar height to prevent content overlap */
+      }
+
+      header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1030; /* Ensures the navbar is above all other elements */
+          background-color: #ffffff; /* Navbar background */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+      }
+
+      .logo h1 {
+          font-family: 'Arial', sans-serif;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #ff7a3f;
+          margin: 0;
+      }
+
+      .sitename {
+          color: #ff7a3f;
+      }
+
+      nav#navmenu ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          gap: 20px;
+      }
+
+      nav#navmenu ul li {
+          position: relative;
+      }
+
+      nav#navmenu ul li a {
+          text-decoration: none;
+          color: black; /* Default link color */
+          font-weight: bold;
+          transition: color 0.3s ease; /* Smooth color transition */
+      }
+
+      /* Hover effect */
+      nav#navmenu ul li a:hover {
+          color: #ffa94d; /* Light orange on hover */
+      }
+
+      /* Active link */
+      nav#navmenu ul li a.active {
+          color: #ff7a3f; /* Bright orange for active link */
+      }
+
+      nav#navmenu ul li ul {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: white;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          list-style: none;
+          padding: 10px 0;
+      }
+
+      nav#navmenu ul li:hover ul {
+          display: block;
+      }
+
+      nav#navmenu ul li ul li {
+          padding: 5px 20px;
+      }
+
+      nav#navmenu ul li ul li a {
+          color: black;
+      }
+
+      .mobile-nav-toggle {
+          display: none;
+          font-size: 1.5rem;
+          color: black;
+      }
+
+      @media (max-width: 768px) {
+          nav#navmenu ul {
+              flex-direction: column;
+              display: none;
+          }
+
+          nav#navmenu.show ul {
+              display: flex;
+          }
+
+          .mobile-nav-toggle {
+              display: block;
+              cursor: pointer;
+          }
+
+          .btn-getstarted {
+              margin-top: 10px;
+          }
+      }
+    </style>
+    {% endblock %}
+</head>
+
+{% block navigation %}
+<header class="d-flex justify-content-between align-items-center px-3 py-2">
+    <a href="{{ path('app_home') }}" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/img/logo.png') }}" alt="Allegui Logo" class="logo-image" />
+    </a>
+    <i class="mobile-nav-toggle bi bi-list" id="mobile-nav-toggle"></i>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+          <li><a href="{{ path('app_home') }}" class="{{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}">{{ 'home'|trans }}</a></li>
+          <li><a href="{{ path('Event-app') }}" class="{{ app.request.attributes.get('_route') == 'Event-app' ? 'active' : '' }}">{{ 'event'|trans }}</a></li>
+          <li class="dropdown">
+              <a href="{{ path('app_galerie') }}">
+                  <span>{{ 'gallery'|trans }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i>
+              </a>
+              <ul>
+                  <li><a href="{{ path('app_galerie') }}">{{ 'gallery'|trans }}</a></li>
+                  <li><a href="{{ path('app_galerie_categorie', { 'Categorie': 'Apern Galerie' }) }}">{{ 'apern_gallery'|trans }}</a></li>
+              </ul>
+          </li>
+          <li><a href="{{ path('Artiste_index') }}" class="{{ app.request.attributes.get('_route') == 'Artiste_index' ? 'active' : '' }}">{{ 'artist'|trans }}</a></li>
+<li>
+    <a href="{{ path('app_contact') }}"
+       class="{{ app.request.attributes.get('_route') == 'app_contact' ? 'active' : '' }}">
+        {{ 'contact'|trans }}
+    </a>
+</li>
+
+      </ul>
+    </nav>
+    <ul>
+        <li>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'fr'})) }}">
+                <img src="{{ asset('assets/img/france.png') }}" alt="Français" style="width:20px; height:auto; margin-right:5px;">
+                FR
+            </a>
+        </li>
+        <li>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'en'})) }}">
+                <img src="{{ asset('assets/img/uk.png') }}" alt="English" style="width:20px; height:auto; margin-right:5px;">
+                EN
+            </a>
+        </li>
+        <li>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_locale': 'de'})) }}">
+                <img src="{{ asset('assets/img/de.png') }}" alt="Deutsch" style="width:20px; height:auto; margin-right:5px;">
+                DE
+            </a>
+        </li>
+    </ul>
+    <a class="btn-getstarted" href="#"></a>
+</header>
+{% endblock navigation %}
+
+<body>
+<div class="content">
+    {% block body %}
+    {% endblock %}
+</div>
+
+{% block footer %}
+<footer id="footer" class="footer position-relative light-background">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="{{ path('app_home') }}" class="logo d-flex align-items-center">
+            <span class="sitename">Allegui</span>
+          </a>
+          <p>Découvrez l'univers artistique de Rachid Allegui à travers ce site dédié à ses œuvres et créations uniques.</p>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">{{ 'menu.home'|trans }}</a></li>
+            <li><a href="index.html#Galerie">{{ 'menu.gallery'|trans }}</a></li>
+            <li><a href="index.html#portfolio">Portfolio</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@eqsdqsdqsdxample.com</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="sitename">Allegui</strong> <span>All Rights Reserved</span></p>
+    </div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+<script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+<script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+<script src="{{ asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+
+<!-- Main JS File -->
+<script src="{{ asset('assets/js/main.js') }}"></script>
+{% endblock %}
+</body>
+</html>

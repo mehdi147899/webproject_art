@@ -1,0 +1,37 @@
+{% extends 'DashBase.html.twig' %}
+
+{% block title %}Dashboard - Contacts{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="margin-top: 150px;">Contact Submissions</h2>
+    
+    {% if contacts is empty %}
+        <p class="text-center">No contact submissions available.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                        <tr>
+                            <th scope="row">{{ contact.id }}</th>
+                            <td>{{ contact.Nom }}</td>
+                            <td>{{ contact.Email }}</td>
+                            <td>{{ contact.Message }}</td>
+                           
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

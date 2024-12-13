@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'events.upcoming_title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="margin-top: 150px;">{{ 'events.upcoming_title'|trans }}</h2>
+
+    <!-- Filter Form -->
+    <form method="get" class="mb-4">
+        <div class="row align-items-end">
+            <!-- Location Filter -->
+            <div class="col-md-4">
+                <label for="lieu" class="form-label">{{ 'events.filter.location_label'|trans }}</label>
+                <select name="lieu" id="lieu" class="form-select">
+                    <option value="">{{ 'events.filter.all_locations'|trans }}</option>
+                    {% for lieu in lieux %}
+                        <option value="{{ lieu.lieu }}" {% if lieu.lieu == selected_lieu %}selected{% endif %}>
+                            {{ lieu.lieu }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date Sorting -->
+            <div class="col-md-4">
+                <label for="date_order" class="form-label">{{ 'events.filter.sort_date_label'|trans }}</label>
+                <select name="date_order" id="date_order" class="form-select">
+                    <option value="asc" {% if selected_date_order == 'asc' %}selected{% endif %}>{{ 'events.filter.sort_asc'|trans }}</option>
+                    <option value="desc" {% if selected_date_order == 'desc' %}selected{% endif %}>{{ 'events.filter.sort_desc'|trans }}</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">{{ 'events.filter.submit'|trans }}</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Event Cards -->
+    <div class="row">
+        {% for evenement in evenements %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ asset('uploads/' ~ evenement.image) }}" class="card-img-top" alt="{{ evenement.getName(app.request.locale) }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ evenement.getName(app.request.locale) }}</h5>
+                        <p class="card-text"><strong>{{ 'events.card.date_label'|trans }}</strong> {{ evenement.date|date('d-m-Y H:i') }}</p>
+                        <p class="card-text"><strong>{{ 'events.card.location_label'|trans }}</strong> {{ evenement.lieu }}</p>
+                        <p class="card-text">{{ evenement.getDescription(app.request.locale)|slice(0, 100) ~ '...' }}</p>
+                        <a href="{{ path('evenement_Details', {'id': evenement.id}) }}" class="btn btn-primary">{{ 'events.card.view_details'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    {{ 'events.no_events_message'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="mt-4">
+        {{ knp_pagination_render(evenements) }}
+    </div>
+</div>
+{% endblock %}

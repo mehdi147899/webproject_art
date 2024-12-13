@@ -1,0 +1,72 @@
+home: "Home"
+event: "Event"
+gallery: "Gallery"
+apern_gallery: "Apern Gallery"
+artist: "Artist"
+contact: "Contact"
+
+menu:
+  home: "Home"
+  gallery: "Gallery"
+
+homepage:
+  title: "Rachid Allegui"
+  greeting: "Hello"
+  intro: "I am Rachid Allegui"
+  gallery_section_title: "Gallery"
+  gallery_subtitle: "The unique artistic world of Rachid Allegui"
+  gallery_description: "Discover the unique artistic world of Rachid Allegui, where vibrant colors and deep emotions come together to bring captivating works to life. Immerse yourself in a gallery that elegantly blends tradition and modernity."
+  explore_gallery: "Explore the gallery"
+  nearest_events_title: "Upcoming Events"
+  portfolio_title: "Portfolio"
+  portfolio_item:
+    app1_title: "Application 1"
+    app1_desc: "Lorem ipsum, dolor sit"
+  artist_section_title: "Artist"
+  date_of_birth: "Date of Birth"
+
+events:
+  upcoming_title: "Upcoming Events"
+  filter:
+    location_label: "Location:"
+    all_locations: "All locations"
+    sort_date_label: "Sort by Date:"
+    sort_asc: "Nearest first"
+    sort_desc: "Farthest first"
+    submit: "Filter"
+  card:
+    date_label: "Date:"
+    location_label: "Location:"
+    view_details: "View Details"
+  no_events_message: "No events available for the selected filters."
+
+pagecontact:
+  page_title: "Contact Us"
+  heading: "Contact"
+  labels:
+    name: "Name:"
+    email: "E-mail:"
+    message: "Message:"
+  placeholders:
+    name: "Enter your name"
+    email: "Enter your email"
+    message: "Enter your message"
+  submit_button: "Send"
+
+artiste:
+  title: "Artist"
+  date_of_birth: "Date of Birth"
+  videos: "Videos"
+  no_artists: "No artists found."
+
+event_detail:
+  title: "Event Details"
+  date_label: "Date:"
+  location_label: "Location:"
+  description_label: "Description:"
+  back_to_events: "Back to Events"
+
+product_detail:
+  title: "Product Details"
+  description_label: "Description:"
+  price_label: "Price:"

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'product_detail.title'|trans }}{% endblock %}
+
+{% block styles %}{{ parent() }}{% endblock %}
+
+{% block body %}
+<section id="produit-detail" class="produit-detail section" style="margin-top: 150px;">
+    <div class="container">
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="product-img">
+                    <img src="{{ asset('uploads/' ~ produit.image) }}" alt="{{ produit.nom }}" class="img-fluid">
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-lg-6">
+                <h2>{{ produit.nom }}</h2>
+
+                <!-- Description Based on Locale -->
+                <p><strong>{{ 'product_detail.description_label'|trans }}</strong> 
+                    {% if app.request.locale == 'fr' %}
+                        {{ produit.descriptionFr }}
+                    {% elseif app.request.locale == 'en' %}
+                        {{ produit.descriptionEn }}
+                    {% elseif app.request.locale == 'de' %}
+                        {{ produit.descriptionDe }}
+                    {% else %}
+                        {{ produit.descriptionFr }} {# Default to French if no locale is matched #}
+                    {% endif %}
+                </p>
+
+                <!-- Price -->
+                <p><strong>{{ 'product_detail.price_label'|trans }}</strong> {{ produit.prix }} €</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}{{ parent() }}{% endblock %}

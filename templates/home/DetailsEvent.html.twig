@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5" style="margin-top: 290px;">
+        <div class="row justify-content-center" style="margin-top: 150px;">
+            <!-- Event Image -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="event-image-container">
+                    <img src="{{ asset('uploads/' ~ evenement.image) }}" 
+                         class="img-fluid rounded shadow-sm" 
+                         alt="{{ evenement.getName(app.request.locale) }}" 
+                         style="width: 100%; height: auto; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="col-md-6 col-12">
+                <h1 class="display-5 mb-3 text-primary">{{ 'event_detail.title'|trans }}</h1>
+                <p><strong>{{ 'event_detail.date_label'|trans }}</strong> {{ evenement.date|date('d-m-Y H:i') }}</p>
+                <p><strong>{{ 'event_detail.location_label'|trans }}</strong> {{ evenement.lieu }}</p>
+                <p><strong>{{ 'event_detail.description_label'|trans }}</strong></p>
+                <p>{{ evenement.getDescription(app.request.locale) }}</p>
+
+                <a href="{{ path('Event-app') }}" class="btn btn-outline-primary mt-3">{{ 'event_detail.back_to_events'|trans }}</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .container {
+            max-width: 1200px;
+        }
+
+        .event-image-container img {
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .display-5 {
+            font-size: 2.5rem;
+        }
+
+        .btn-outline-primary {
+            border-color: #ff7a3f;
+            color: #ff7a3f;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #ff7a3f;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #ff7a3f;
+            border-color: #ff7a3f;
+        }
+
+        .btn-primary:hover {
+            background-color: #e66b36;
+        }
+
+        @media (max-width: 768px) {
+            .display-5 {
+                font-size: 1.8rem;
+            }
+
+            .event-image-container img {
+                max-height: 300px;
+            }
+        }
+    </style>
+{% endblock %}
